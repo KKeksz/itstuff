@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Fejlesztés alatt</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #3498db; /* Kék háttér */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 2em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    Fejlesztés alatt! – Név – Szerver neve
+  </div>
+</body>
+</html>
