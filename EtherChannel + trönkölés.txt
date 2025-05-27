@@ -1,0 +1,50 @@
+EtherChannel + trönkölés:
+Switch(config)#int range f0/5-8
+Switch(config-if-range)#channel-group 3 mode active
+Switch(config-if-range)#ex
+Switch(config)#int port-channel 3
+Switch(config-if)#switchport mode trunk
+Switch(config-if)#ex
+Switch(config)#vtp domain javito_vizsga
+Switch(config)#vtp mode client
+Switch(config)#vtp password javito_vizsga_24
+
+Port hozzárendelése vlan-hoz:
+Switch(config)#int f0/20
+Switch(config-if)#switchport mode access
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#ex
+
+Alportok létrehozása + ip-cím hozzárendelése:
+Router(config)#int g0/0.15
+Router(config-subif)#encapsulation dot1Q 15
+Router(config-subif)#ip add 192.168.0.129 255.255.255.224
+Router(config-subif)#ip helper-address 192.172.120.2
+Router(config-subif)#no shut
+
+
+VLANOK switch -> router
+enable
+configure terminal
+
+vlan 10
+ name Sales
+vlan 20
+ name IT
+
+interface range fa0/1 - 2
+ switchport mode access
+ switchport access vlan 10
+
+interface range fa0/3 - 4
+ switchport mode access
+ switchport access vlan 20
+
+interface g0/1
+ 
+ switchport mode trunk
+ switchport trunk allowed vlan 20, 30
+exit
+
+
+ switchport trunk allowed vlan 20, 30
