@@ -1,0 +1,32 @@
+EIGRP
+
+enable
+configure terminal
+hostname Router0
+
+router eigrp 15
+network 172.168.0.0
+no auto-summary
+exit
+
+OSPF
+
+enable
+configure terminal
+hostname Router1
+
+router ospf 25
+network 172.168.0.0 0.0.255.255 area 16
+exit
+
+RIP
+
+enable
+configure terminal
+hostname Router2
+
+router rip
+version 2
+no auto-summary
+network 172.168.0.0
+exit
