@@ -1,0 +1,79 @@
+DHCP Szerver valós konfigurációja:
+
+1. Statikus IP cím beállítása a szerveren:  nano /etc/network/interfaces
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+iface eth0 inet static
+      address 192.168.1.100
+      netmask 255.255.255.0
+      gateway 192.168.1.1
+
+2. Hálózati beállítások újraindítása: service networking restart
+3. Beállítások ellenõrzése: ip a
+
+4. DHCP szerver telepítése: apt-get install isc-dhcp-server
+
+5. DHCP szerver konfigurálása: nano /etc/dhcp/dhcpd.conf
+
+option domain-name "ceg.local";
+option domain-name-servers 192.168.1.100;
+default-lease-time 600;
+max-lease-time: 7200;
+authoritative; (ki kell venni a #-et)
+
+subnet 192.168.1.0 netmask 255.255.255.0 {
+  range 192.168.1.2 192.168.1.255;
+  option broadcast-address 192.168.1.255;
+  option routers 192.168.1.1;
+}
+
+A hálózati kártya beállítása, amin a dhcp-t adjuk
+ip a
+/etc/default/isc-dhcp-server 
+
+INTERFACESv4="enp0s3"
+
+6. DHCP szerver újraindítása: service isc-dhcp-server restart
+
+tesztelés:
+dhcpd -t
+systemctl start isc-dhcp-server
+
+monitorozás:
+dhcp-lease-list
+dhcp-lease-list --all
+arp -a
+cat /var/lib/dhcp/dhcpd.leases
+
+7. WindowsXP kliens elindítása és DHCP-re való átállítása
+
+8. Samba szerver telepítése: apt-get install samba
+
+9. Samba szerver konfigurálása: nano /etc/samba/smb.conf
+mkdir sambashare
+chmod 777 sambashare
+ls-l
+
+[sambashare]
+    comment = Megosztas
+    path = /home/jozsi/megosztas
+    browseable = yes
+    read only = no
+    guest ok = no
+    writable = yes
+
+service smbd restart
+testparm
+
+
+
+
+
+Resolv.conf!!!!

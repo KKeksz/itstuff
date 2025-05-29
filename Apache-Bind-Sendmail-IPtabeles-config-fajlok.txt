@@ -1,0 +1,54 @@
+apt-get install apache2
+/etc/apache2/apache2.conf - Globális konfig fájl általános beállításokkal
+/etc/apache2/ports.conf - Portok beállítása
+/etc/apache2/mods-enabled/barmilyen.conf - a bekapcsolt bővítményeknek a konfigjai
+/etc/apache2/conf-enabled/localized-error-pages.conf - A hibaoldalakkal kapcsolatos beállítások
+/etc/apache2/sites-enabled/000-default.conf - Alapértelmezett oldal beállításai
+
+dnsdomainname <- lekérjük a dns címét a gépnek
+apt-get install bind9
+/etc/bind/named.conf.options
+/etc/bind/named.conf.default-zones
+
+/etc/resolv.conf
+apt-get install openssh-server
+
+apt-get install sendmail
+/etc/mail/sendmail.conf
+
+apt-get install iptables
+Nézze meg, hogy vannak-e már szabályok a tűzfalban!
+ - iptables -L -v
+Dobja el a localhost címre érkező ping (ICMP) csomagokat a tűzfal segítségével!
+ - iptables -A INPUT -p icmp -j DROP 
+Engedélyezze az SSH kapcsolatot.
+- iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+Engedélyezze a webszervert.
+- iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+vagy
+- iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+Engedélyezze a DNS szervert.
+- iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
+- iptables -A OUTPUT -p tcp --dport 53 -j ACCEPT
+
+Minden titlva
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+-A kapcsoló: a szabályt a lánc végére szúrja be
+-I kapcsoló: a szabályt a lánc elejére szúrja be
+INPUT: a gépre bejövő lánc
+OUTPUT: a gépről kimenő lánc
+FORWARD: hálózatról jövő, de nem a gépnek szánt csomag
+-s kapcsoló: IP cím, a küldő IP címe
+-d kapcsoló: IP cím, a címzett IP címe
+-p kapcsoló: protokoll: tcp, udp, icmp
+-m kapcsoló: modul
+--sport kapcsoló: küldő port
+--dport kapcsoló: a címzett portja
+-j kapcsoló: megajda, mit kell tenni:
+ACCEPT - fogadás
+REJECT - visszadobás és jelzés a küldőnek
+DROP - eldobás
+LOG - naplózás
